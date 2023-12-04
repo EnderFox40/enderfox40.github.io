@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title>EnderFoxBG
+        
+    </title>
+    
+    <link rel="stylesheet" href="about.css">
+    <!-- Fontawesome CDN Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+   </head>
+<body>
+  <nav>
+    <div class="navbar">
+      <div class="logo"><a href="index.html ">EnderFoxBG</a></div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home
+            <i class='bx bxs-home' style='color:#ffffff' ></i>
+        </a></li>
+        <li><a href="about.html">About
+            <i class='bx bxs-info-circle'></i>
+        </a></li>
+        <li><a href="videos.html">Videos
+            <i class='bx bxs-video' style='color:#ffffff' ></i>
+        </a></li>
+        <li><a href="contact.html">Contact
+            <i class='bx bxs-message'></i>
+        </a></li>
+      </ul>
+      
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  <script>
+    // Заменете 'YOUR_API_KEY' с вашия YouTube Data API ключ
+var API_KEY = 'AIzaSyCTxB0qni5h10TExDJqbdU8n8SXmo7F1tQ';
+var CHANNEL_ID = 'UCJaGyHkP6fUhXGVZQ9YJkKQ'; // Заменете с ID на желания канал
+
+// URL за заявка към YouTube Data API за получаване на последните видеа от даден канал
+var apiUrl = 'https://www.googleapis.com/youtube/v3/search?key=' + API_KEY +
+    '&channelId=' + CHANNEL_ID +
+    '&part=snippet,id&order=date&maxResults=5';
+
+// Извикване на API и показване на видеата
+fetch(apiUrl)
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        var videos = data.items;
+        videos.forEach(function(video) {
+            // Вземете видео идентификатор и вградете видеото в HTML
+            var videoId = video.id.videoId;
+            var videoTitle = video.snippet.title;
+            var embedHtml = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + videoId + '?showinfo=0" frameborder="0" allowfullscreen></iframe>';
+            
+            // Покажете видеото в определен елемент на страницата
+            var videoContainer = document.getElementById('video-container'); // Заменете с ID на вашия HTML елемент
+            videoContainer.innerHTML +=  '</h2>' + embedHtml;
+        });
+    })
+    .catch(function(error) {
+        console.error('Грешка: ', error);
+    });
+
+
+  // Js code to make color box enable or disable
+  let colorIcons = document.querySelector(".color-icon"),
+  icons = document.querySelector(".color-icon .icons");
+
+  icons.addEventListener("click" , ()=>{
+    colorIcons.classList.toggle("open");
+  })
+
+  // getting all .btn elements
+  let buttons = document.querySelectorAll(".btn");
+
+  for (var button of buttons) {
+    button.addEventListener("click", (e)=>{ //adding click event to each button
+      let target = e.target;
+
+      let open = document.querySelector(".open");
+      if(open) open.classList.remove("open");
+
+      document.querySelector(".active").classList.remove("active");
+      target.classList.add("active");
+
+      // js code to switch colors (also day night mode)
+      let root = document.querySelector(":root");
+      let dataColor = target.getAttribute("data-color"); //getting data-color values of clicked button
+      let color = dataColor.split(" "); //splitting each color from space and make them array
+
+      //passing particular value to a particular root variable
+      root.style.setProperty("--white", color[0]);
+      root.style.setProperty("--black", color[1]);
+      root.style.setProperty("--nav-main", color[2]);
+      root.style.setProperty("--switchers-main", color[3]);
+      root.style.setProperty("--light-bg", color[4]);
+
+      let iconName = target.className.split(" ")[2]; //getting the class name of icon
+
+      let coloText = document.querySelector(".home-content span");
+
+      if(target.classList.contains("fa-moon")){ //if icon name is moon
+        target.classList.replace(iconName, "fa-sun") //replace it with the sun
+        colorIcons.style.display = "none";
+        coloText.classList.add("darkMode");
+      }else if (target.classList.contains("fa-sun")) { //if icon name is sun
+        target.classList.replace("fa-sun", "fa-moon"); //replace it with the sun
+        colorIcons.style.display = "block";
+        coloText.classList.remove("darkMode");
+        document.querySelector(".btn.blue").click();
+      }
+    });
+  }
+ </script>
+ <h2>Latest Videos</h2>
+ <div id="video-container">
+    <div id="video"></div>
+ </div>
+
+</body>
+</html>
